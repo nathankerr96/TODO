@@ -22,7 +22,7 @@ exports.handle_request = function (req, res) {
   };
   */
 
-  console.log("HERE")
+  console.log("HEREtest")
 
   var con = mysql.createConnection(config);
 
