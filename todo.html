@@ -1,0 +1,31 @@
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+  $(document).ready(populate);
+
+  function populate() {
+      update_list();
+  }
+
+  function update_list() {
+    var list = document.getElementById('list1');
+    $.getJSON("api", function(data){
+      $.each( data, function( key, val ) {
+        var item = document.createElement('li');
+        item.appendChild(document.createTextNode(key + ' ' + val));
+        list.appendChild(item);
+      });
+    });
+  }
+
+  </script>
+</head>
+<body>
+  <p> Hello Cory! Happy Birthday + 1! </p>
+  <p> Here are the things you need to do: </p>
+  <ul id="list1">
+    <li>Test1</li>
+  </ul>
+</body>
+</html>
