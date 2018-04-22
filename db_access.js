@@ -22,7 +22,7 @@ exports.handle_request = function (req, res) {
     con.query(q, function (err, result, fields) {
       if (err) throw err;
 
-      res.write(JSON.stringify({result}), function {
+      res.write(JSON.stringify({result}), function (err) {
         res.end();
       });
     })
