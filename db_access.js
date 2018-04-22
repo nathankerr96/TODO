@@ -8,11 +8,10 @@ exports.handle_request = function (req, res) {
   var config = {
     host: "localhost",
     user: "test",
-    password: "test1234",
     database: "todo",
-    //insecureAuth: true
   }
 
+  /*
   config.authSwitchHandler = (unused, cb) => {
     // workaround for node mysql bug #1507
     if (pluginName === 'auth_socket') {
@@ -21,6 +20,7 @@ exports.handle_request = function (req, res) {
       cb(new Error("Unsupported auth plugin"));
     }
   };
+  */
 
   console.log("HERE")
 
