@@ -11,27 +11,21 @@ exports.handle_request = function (req, res) {
     database: "todo",
   }
 
-  /*
-  config.authSwitchHandler = (unused, cb) => {
-    // workaround for node mysql bug #1507
-    if (pluginName === 'auth_socket') {
-      cb(null, Buffer.alloc(0));
-    } else {
-      cb(new Error("Unsupported auth plugin"));
-    }
-  };
-  */
-
   console.log("HEREtest")
 
   var con = mysql.createConnection(config);
 
   con.connect(function(err) {
-    if (err) {
-      throw err;
-    } else {
-      alert("Connected!");
-    }
+    if (err) throw err;
+
+    var q = 'SELECT * FROM tasks;';
+    con.query(q, function (err, result, fields) {
+      if (err) throw err;
+
+      res.write(JSON.stringify({result}));
+    })
+
+
   })
 
   //res.write(JSON.stringify({a: 1, b: 2}));
