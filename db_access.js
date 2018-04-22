@@ -22,12 +22,13 @@ exports.handle_request = function (req, res) {
     con.query(q, function (err, result, fields) {
       if (err) throw err;
 
-      res.write(JSON.stringify({result}));
+      res.write(JSON.stringify({result}), function {
+        res.end();
+      });
     })
 
 
   })
 
   //res.write(JSON.stringify({a: 1, b: 2}));
-  res.end();
 }
