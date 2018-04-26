@@ -11,8 +11,6 @@ exports.handle_request = function (req, res) {
     database: "todo",
   }
 
-  console.log("HEREtest")
-
   var con = mysql.createConnection(config);
 
   con.connect(function(err) {
@@ -22,7 +20,7 @@ exports.handle_request = function (req, res) {
     con.query(q, function (err, result, fields) {
       if (err) throw err;
 
-      res.write(JSON.stringify({result}), function (err) {
+      res.write(JSON.stringify(result), function (err) {
         res.end();
       });
     })

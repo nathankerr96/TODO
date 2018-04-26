@@ -9,12 +9,21 @@
   }
 
   function update_list() {
-    var list = document.getElementById('list1');
+    var table = document.getElementById('table1');
     $.getJSON("api", function(data){
       $.each( data, function( key, val ) {
-        var item = document.createElement('li');
-        item.appendChild(document.createTextNode(key + ' ' + val));
-        list.appendChild(item);
+        var table_row = document.createElement('tr');
+        var table_div1 = document.createElement('td');
+        var table_div2 = document.createElement('td');
+
+        table_row.appendChild(table_div1);
+        table_row.appendChild(table_div2);
+
+        table_div1.appendChild(document.createTextNode(val['task']));
+        table_div2.appendChild(document.createTextNode('Placeholder'));
+
+        //item.appendChild(document.createTextNode(val['task']));
+        table.appendChild(table_row);
       });
     });
   }
@@ -22,10 +31,12 @@
   </script>
 </head>
 <body>
-  <p> Hello Cory! Happy Birthday + 1! </p>
+  <h1> Get Ready to WORK! </h1>
   <p> Here are the things you need to do: </p>
-  <ul id="list1">
-    <li>Test1</li>
-  </ul>
+  <table id="table1">
+    <tr>
+        <td>Test1</td> <td>Placeholder</td>
+    </tr>
+  </table>
 </body>
 </html>
