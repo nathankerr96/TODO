@@ -10,22 +10,30 @@
 
   function update_list() {
     var table = document.getElementById('table1');
-    $.getJSON("api", function(data){
+    $.getJSON("api/tasks?mode=select", function(data){
       $.each( data, function( key, val ) {
         var table_row = document.createElement('tr');
-        var table_div1 = document.createElement('td');
-        var table_div2 = document.createElement('td');
 
+        var table_div1 = document.createElement('td');
+        table_div1.appendChild(document.createTextNode(val['task']));
         table_row.appendChild(table_div1);
+
+        var table_div2 = document.createElement('td');
+        var finishButton = document.createElement('button');
+        finishButton.onclick = function (){
+          finishTask(val['id']);  
+        };
+        finishButton.appendChild(document.createTextNode('Finish'));
+        table_div2.appendChild(finishButton);
         table_row.appendChild(table_div2);
 
-        table_div1.appendChild(document.createTextNode(val['task']));
-        table_div2.appendChild(document.createTextNode('Placeholder'));
-
-        //item.appendChild(document.createTextNode(val['task']));
         table.appendChild(table_row);
       });
     });
+  }
+
+  function finishTask(taskID) {
+    $.get( 'api/tasks?mode=delete&id=' + taskID );
   }
 
   </script>

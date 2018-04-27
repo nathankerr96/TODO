@@ -10,7 +10,7 @@ function route(req, res) {
     var parsed_url = url.parse(req.url, true);
     var filename = "." + parsed_url.pathname;
 
-    if (filename === './api') {
+    if (parsed_url.pathname.substring(0,4) === '/api') {
       db.handle_request(req, res);
     } else {
       fs.readFile(filename, function(err, data) {
