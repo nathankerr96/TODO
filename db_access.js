@@ -7,10 +7,11 @@ exports.handle_request = function (req, res) {
 
 
   var config = {
-    host: "localhost",
-    user: "test",
-    database: "todo",
-  }
+    host: 'localhost',
+    user: 'test',
+    database: 'todo',
+    timezone: 'utc'
+    }
 
 
   var parsedUrl = url.parse(req.url, true);
@@ -30,7 +31,6 @@ exports.handle_request = function (req, res) {
       });
     })
 
-
   })
 }
 
@@ -42,14 +42,36 @@ function getQuery(parsedUrl) {
   var searchParams = parsedUrl.query;
   var mode = searchParams.mode;
 
+
+  var query = null;
   if (mode === 'select' || mode === null) {
-    return 'SELECT * FROM ' + database + ';';
+    var user = searchParams.user;
+    query = 'SELECT * FROM ' + database + ' WHERE user="' + user + '";';
+  }
+
+  if (mode === 'insert') {
+    var user = searchParams.user;
+    var insertTime = searchParams.insertTime;
+    var task = searchParams.task;
+
+    query = "INSERT INTO " + database + " VALUES ('" + user + "', '" + insertTime +
+      "', '" + task +"')";
+
+      console.log(query);
   }
 
   if (mode === 'delete') {
-    var id = searchParams.id;
-    return 'DELETE FROM  ' + database + ' WHERE id=' + id + ';';
+    var user = searchParams.user;
+    var insertTime = searchParams.insertTime;
+    insertTime = insertTime.slice(0,19).replace('T', ' ');
+
+    console.log(insertTime);
+
+    query = 'DELETE FROM ' + database + ' WHERE user="' + user +
+      '" AND insertTime="' + insertTime + '";';
+
+    console.log(query);
   }
 
-  return null;
+  return query;
 }

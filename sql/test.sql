@@ -1,2 +1,2 @@
-INSERT INTO tasks VALUES (NULL, 'nathan', 'Working Insert and Delete');
-INSERT INTO tasks VALUES (NULL, 'mitchell', 'WIN LIFE');
+INSERT INTO tasks VALUES ('nathan', NOW(), 'Working Insert and Delete');
+INSERT INTO tasks VALUES ('mitchell', NOW(), 'WIN LIFE');

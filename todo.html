@@ -9,31 +9,56 @@
   }
 
   function update_list() {
-    var table = document.getElementById('table1');
-    $.getJSON("api/tasks?mode=select", function(data){
+    $.getJSON("api/tasks?mode=select&user=nathan", function(data){
       $.each( data, function( key, val ) {
-        var table_row = document.createElement('tr');
-
-        var table_div1 = document.createElement('td');
-        table_div1.appendChild(document.createTextNode(val['task']));
-        table_row.appendChild(table_div1);
-
-        var table_div2 = document.createElement('td');
-        var finishButton = document.createElement('button');
-        finishButton.onclick = function (){
-          finishTask(val['id']);  
-        };
-        finishButton.appendChild(document.createTextNode('Finish'));
-        table_div2.appendChild(finishButton);
-        table_row.appendChild(table_div2);
-
-        table.appendChild(table_row);
+        addTaskToTable(val);
       });
     });
   }
 
-  function finishTask(taskID) {
-    $.get( 'api/tasks?mode=delete&id=' + taskID );
+  function finishTask (user, dateTime) {
+    var requestUri = 'api/tasks?mode=delete&user=nathan&insertTime=' + dateTime;
+    $.get(encodeURI(requestUri));
+
+  }
+
+  function addTaskToTable (val) {
+    var table = document.getElementById('table1');
+    var table_row = document.createElement('tr');
+
+    var table_div1 = document.createElement('td');
+    table_div1.appendChild(document.createTextNode(val['task']));
+    table_row.appendChild(table_div1);
+
+    var table_div2 = document.createElement('td');
+    var finishButton = document.createElement('button');
+    finishButton.onclick = function (){
+      finishTask("nathan", val['insertTime']);
+      this.parentNode.parentNode.remove();
+    };
+    finishButton.appendChild(document.createTextNode('Finish'));
+    table_div2.appendChild(finishButton);
+    table_row.appendChild(table_div2);
+
+    table.appendChild(table_row);
+  }
+
+  function addTask (form) {
+    var newTask = form.taskDescription.value;
+
+    var dateTime = new Date().toISOString().slice(0,19).replace('T', ' ');
+
+    var val = {
+      user: "nathan",
+      insertTime: dateTime,
+      task: newTask
+    };
+    addTaskToTable(val);
+
+    var requestUri = 'api/tasks?mode=insert&user=nathan&insertTime=' + dateTime +
+        '&task=' + newTask;
+    $.get(encodeURI(requestUri));
+
   }
 
   </script>
@@ -46,5 +71,10 @@
         <td>Test1</td> <td>Placeholder</td>
     </tr>
   </table>
+  <br />
+  <form name="createTaskForm">
+    <input type="text" name="taskDescription" value="">
+    <input type="button" name="submitTaskButton" value="Add" onClick="addTask(this.form)">
+  </form>
 </body>
 </html>

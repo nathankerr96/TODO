@@ -3,7 +3,8 @@ USE todo;
 
 DROP TABLE IF EXISTS tasks;
 CREATE TABLE tasks (
-  id INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user VARCHAR(30) NOT NULL,
-  task TEXT
+  insertTime DATETIME NOT NULL,
+  task TEXT,
+  PRIMARY KEY (user, insertTime)
 );
