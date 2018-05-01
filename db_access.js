@@ -37,11 +37,9 @@ exports.handle_request = function (req, res) {
 function getQuery(parsedUrl) {
 
   var database = parsedUrl.pathname.split('/')[2];
-  console.log(database);
 
   var searchParams = parsedUrl.query;
   var mode = searchParams.mode;
-
 
   var query = null;
   if (mode === 'select' || mode === null) {
@@ -56,8 +54,6 @@ function getQuery(parsedUrl) {
 
     query = "INSERT INTO " + database + " VALUES ('" + user + "', '" + insertTime +
       "', '" + task +"')";
-
-      console.log(query);
   }
 
   if (mode === 'delete') {
@@ -65,12 +61,9 @@ function getQuery(parsedUrl) {
     var insertTime = searchParams.insertTime;
     insertTime = insertTime.slice(0,19).replace('T', ' ');
 
-    console.log(insertTime);
-
     query = 'DELETE FROM ' + database + ' WHERE user="' + user +
       '" AND insertTime="' + insertTime + '";';
 
-    console.log(query);
   }
 
   return query;

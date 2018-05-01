@@ -9,7 +9,9 @@
   }
 
   function update_list() {
-    $.getJSON("api/tasks?mode=select&user=nathan", function(data){
+    var loginName = sessionStorage.getItem('loginName');
+    var url = 'api/tasks?mode=select&user=' + loginName;
+    $.getJSON(url, function(data){
       $.each( data, function( key, val ) {
         addTaskToTable(val);
       });
@@ -17,7 +19,8 @@
   }
 
   function finishTask (user, dateTime) {
-    var requestUri = 'api/tasks?mode=delete&user=nathan&insertTime=' + dateTime;
+    var loginName = sessionStorage.getItem('loginName');
+    var requestUri = 'api/tasks?mode=delete&user=' + loginName + '&insertTime=' + dateTime;
     $.get(encodeURI(requestUri));
 
   }
@@ -33,7 +36,7 @@
     var table_div2 = document.createElement('td');
     var finishButton = document.createElement('button');
     finishButton.onclick = function (){
-      finishTask("nathan", val['insertTime']);
+      finishTask(sessionStorage.getItem('loginName'), val['insertTime']);
       this.parentNode.parentNode.remove();
     };
     finishButton.appendChild(document.createTextNode('Finish'));
@@ -48,27 +51,35 @@
 
     var dateTime = new Date().toISOString().slice(0,19).replace('T', ' ');
 
+    var loginName = sessionStorage.getItem('loginName');
+
     var val = {
-      user: "nathan",
+      user: loginName,
       insertTime: dateTime,
       task: newTask
     };
     addTaskToTable(val);
 
-    var requestUri = 'api/tasks?mode=insert&user=nathan&insertTime=' + dateTime +
-        '&task=' + newTask;
-    $.get(encodeURI(requestUri));
+    var requestUri = 'api/tasks?mode=insert&user=' + loginName + '&insertTime=' +
+        dateTime + '&task=' + newTask;
 
+    $.get(encodeURI(requestUri));
+  }
+
+  function logout () {
+    sessionStorage.removeItem('loginName');
+    window.location.replace('login.html');
   }
 
   </script>
 </head>
 <body>
   <h1> Get Ready to WORK! </h1>
+  <button type="button" onClick="logout()">Logout</button>
   <p> Here are the things you need to do: </p>
   <table id="table1">
     <tr>
-        <td>Test1</td> <td>Placeholder</td>
+        <td>Task</td> <td>Finish</td>
     </tr>
   </table>
   <br />
