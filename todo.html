@@ -2,6 +2,14 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
+
+  window.onload = function () {
+    //redirect to login if session variable not set
+    if (sessionStorage.getItem('loginName') === null) {
+      window.location.replace('login.html')
+    }
+  }
+
   $(document).ready(populate);
 
   function populate() {
