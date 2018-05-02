@@ -3,7 +3,7 @@ const url = require('url');
 
 
 exports.handle_request = function (req, res) {
-  res.writeHead(200, {'Content-Type': 'application/json'})
+  res.writeHead(200, {'Content-Type': 'application/json'});
 
 
   var config = {
@@ -11,7 +11,7 @@ exports.handle_request = function (req, res) {
     user: 'test',
     database: 'todo',
     timezone: 'utc'
-    }
+  };
 
 
   var parsedUrl = url.parse(req.url, true);
@@ -29,10 +29,10 @@ exports.handle_request = function (req, res) {
       res.write(JSON.stringify(result), function (err) {
         res.end();
       });
-    })
+    });
 
-  })
-}
+  });
+};
 
 function getQuery(parsedUrl) {
 
@@ -53,7 +53,8 @@ function getQuery(parsedUrl) {
     var task = searchParams.task;
 
     query = "INSERT INTO " + database + " VALUES ('" + user + "', '" + insertTime +
-      "', '" + task +"')";
+      "', '" + task +"', 0)";
+
   }
 
   if (mode === 'delete') {
@@ -63,6 +64,16 @@ function getQuery(parsedUrl) {
 
     query = 'DELETE FROM ' + database + ' WHERE user="' + user +
       '" AND insertTime="' + insertTime + '";';
+
+  }
+
+  if (mode === 'markComplete') {
+    var user = searchParams.user;
+    var insertTime = searchParams.insertTime;
+    insertTime = insertTime.slice(0,19).replace('T', ' ');
+
+    query = 'UPDATE tasks SET complete = 1 WHERE user="'+ user + '" AND insertTime="' +
+        insertTime + '";';
 
   }
 

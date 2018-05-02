@@ -16,7 +16,7 @@ function route(req, res) {
       fs.readFile(filename, function(err, data) {
           if (err) {
               res.writeHead(404, {'Content-Type': 'text/html'});
-              console.log(filename)
+              console.log(filename);
               return res.end("404 Not Found");
           }
 

@@ -28,28 +28,38 @@
 
   function finishTask (user, dateTime) {
     var loginName = sessionStorage.getItem('loginName');
-    var requestUri = 'api/tasks?mode=delete&user=' + loginName + '&insertTime=' + dateTime;
+    var requestUri = 'api/tasks?mode=markComplete&user=' + loginName + '&insertTime=' + dateTime;
     $.get(encodeURI(requestUri));
-
   }
 
   function addTaskToTable (val) {
-    var table = document.getElementById('table1');
+    if (val['complete'] === 0) {
+      var tableName = 'todoTable';
+    } else {
+      var tableName = 'completedTable';
+    }
+    var table = document.getElementById(tableName);
+
     var table_row = document.createElement('tr');
 
     var table_div1 = document.createElement('td');
     table_div1.appendChild(document.createTextNode(val['task']));
     table_row.appendChild(table_div1);
 
-    var table_div2 = document.createElement('td');
-    var finishButton = document.createElement('button');
-    finishButton.onclick = function (){
-      finishTask(sessionStorage.getItem('loginName'), val['insertTime']);
-      this.parentNode.parentNode.remove();
-    };
-    finishButton.appendChild(document.createTextNode('Finish'));
-    table_div2.appendChild(finishButton);
-    table_row.appendChild(table_div2);
+    if (val['complete'] === 0) {
+      //maybe add a delete button here if complete
+      var table_div2 = document.createElement('td');
+      var finishButton = document.createElement('button');
+      finishButton.onclick = function (){
+        finishTask(sessionStorage.getItem('loginName'), val['insertTime']);
+        this.parentNode.parentNode.remove();
+        val['complete'] = 1;
+        addTaskToTable(val);
+      };
+      finishButton.appendChild(document.createTextNode('Finish'));
+      table_div2.appendChild(finishButton);
+      table_row.appendChild(table_div2);
+    }
 
     table.appendChild(table_row);
   }
@@ -64,7 +74,8 @@
     var val = {
       user: loginName,
       insertTime: dateTime,
-      task: newTask
+      task: newTask,
+      complete: 0
     };
     addTaskToTable(val);
 
@@ -85,7 +96,7 @@
   <h1> Get Ready to WORK! </h1>
   <button type="button" onClick="logout()">Logout</button>
   <p> Here are the things you need to do: </p>
-  <table id="table1">
+  <table id="todoTable">
     <tr>
         <td>Task</td> <td>Finish</td>
     </tr>
@@ -95,5 +106,9 @@
     <input type="text" name="taskDescription" value="">
     <input type="button" name="submitTaskButton" value="Add" onClick="addTask(this.form)">
   </form>
+  <br />
+  <p> Here are the things you have completed: </p>
+  <table id="completedTable">
+  </table>
 </body>
 </html>
