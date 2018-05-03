@@ -2,29 +2,33 @@ const mysql = require('mysql');
 const url = require('url');
 
 
-exports.handle_request = function (req, res) {
-  res.writeHead(200, {'Content-Type': 'application/json'});
-
-
-  var config = {
+var pool = mysql.createPool({
+    connectionLimit: 10,
     host: 'localhost',
     user: 'test',
     database: 'todo',
     timezone: 'utc'
-  };
+});
 
+exports.handle_request = function (req, res) {
+  res.writeHead(200, {'Content-Type': 'application/json'});
 
   var parsedUrl = url.parse(req.url, true);
 
   var query = getQuery(parsedUrl);
 
-  var con = mysql.createConnection(config);
+  //var con = mysql.createConnection(config);
 
-  con.connect(function(err) {
+  pool.getConnection(function(err, con) {
     if (err) throw err;
 
     con.query(query, function (err, result, fields) {
-      if (err) throw err;
+      if (err) {
+        console.log("Error on mysql connection.");
+        throw err;
+      }
+
+      con.release();
 
       res.write(JSON.stringify(result), function (err) {
         res.end();
