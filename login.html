@@ -1,19 +1,25 @@
 <html>
 
 <head>
+
+  <link href = ./login.css type = "text/css" rel="stylesheet">
+
   <script>
   function login (form) {
     sessionStorage.setItem('loginName', form.loginName.value);
     window.location.replace('todo.html')
   }
   </script>
+
 </head>
 
 <body>
-  <h1>Login</h1>
+  <div id="loginBanner">
+    <center><h1>Login</h1></center>
+  </div>
   <form>
-    <input type="text" name="loginName" value="">
-    <input type="button" name="submitLoginName" value="Login" onClick="login(this.form)">
+  <center>  <input type="text" name="loginName" value="">
+    <input type="button" name="submitLoginName" value="Login" onClick="login(this.form)"></center>
   </form>
 </body>
 
