@@ -1,19 +1,14 @@
 <html>
 
 <head>
-  <script>
-  function login (form) {
-    sessionStorage.setItem('loginName', form.loginName.value);
-    window.location.replace('todo.html')
-  }
-  </script>
+  <script src="login.js"></script>
 </head>
 
 <body>
   <h1>Login</h1>
-  <form>
-    <input type="text" name="loginName" value="">
-    <input type="button" name="submitLoginName" value="Login" onClick="login(this.form)">
+  <form id="loginForm">
+    <input type="text" name="loginName" id="loginName" value="">
+    <input type="submit" name="submitLoginName" value="Login">
   </form>
 </body>
 
