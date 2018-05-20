@@ -7,5 +7,6 @@ CREATE TABLE test_tasks (
   insertTime DATETIME NOT NULL,
   task TEXT,
   complete BOOLEAN DEFAULT 0 NOT NULL,
+  completeTime DATETIME,
   PRIMARY KEY (user, insertTime)
 );

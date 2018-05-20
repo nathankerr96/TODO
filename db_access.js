@@ -16,11 +16,11 @@ exports.handle_request = function (req, res) {
   var parsedUrl = url.parse(req.url, true);
 
   var query = getQuery(parsedUrl);
-
   //var con = mysql.createConnection(config);
 
   pool.getConnection(function(err, con) {
     if (err) throw err;
+    console.log(query);
 
     con.query(query, function (err, result, fields) {
       if (err) {
@@ -34,7 +34,6 @@ exports.handle_request = function (req, res) {
         res.end();
       });
     });
-
   });
 };
 
@@ -44,41 +43,40 @@ function getQuery(parsedUrl) {
 
   var searchParams = parsedUrl.query;
   var mode = searchParams.mode;
+  var user = mysql.escape(searchParams.user);
+  //TODO: check insertTime integrity
+  var insertTime = searchParams.insertTime;
+  var task = mysql.escape(searchParams.task);
+
+  var midnightDate = new Date();
+  midnightDate.setHours(0,0,0,0);
+  var midnightTime = midnightDate.toISOString().slice(0,19).replace('T', ' ');
 
   var query = null;
+
   if (mode === 'select' || mode === null) {
-    var user = searchParams.user;
-    query = 'SELECT * FROM ' + database + ' WHERE user="' + user + '";';
+    query = 'SELECT * FROM ' + database +
+      ' WHERE user=' + user +
+        ' AND ((completeTime > "' + midnightTime + '" AND complete=1)' +
+        ' OR complete=0)' +
+      ';';
   }
 
   if (mode === 'insert') {
-    var user = searchParams.user;
-    var insertTime = searchParams.insertTime;
-    var task = searchParams.task;
-
-    query = "INSERT INTO " + database + " VALUES ('" + user + "', '" + insertTime +
-      "', '" + task +"', 0)";
-
+    query = "INSERT INTO " + database + " VALUES (" + user + ", '" + insertTime +
+      "', " + task +", 0, NULL)";
   }
 
   if (mode === 'delete') {
-    var user = searchParams.user;
-    var insertTime = searchParams.insertTime;
     insertTime = insertTime.slice(0,19).replace('T', ' ');
-
-    query = 'DELETE FROM ' + database + ' WHERE user="' + user +
-      '" AND insertTime="' + insertTime + '";';
-
+    query = 'DELETE FROM ' + database + ' WHERE user=' + user +
+      ' AND insertTime="' + insertTime + '";';
   }
 
   if (mode === 'markComplete') {
-    var user = searchParams.user;
-    var insertTime = searchParams.insertTime;
     insertTime = insertTime.slice(0,19).replace('T', ' ');
-
-    query = 'UPDATE tasks SET complete = 1 WHERE user="'+ user + '" AND insertTime="' +
+    query = 'UPDATE tasks SET complete=1, completeTime=NOW() WHERE user='+ user + ' AND insertTime="' +
         insertTime + '";';
-
   }
 
   return query;
