@@ -6,6 +6,10 @@ body {
   */
 }
 
+h1 {
+  text-align: center;
+}
+
 div.main {
   /*
   background: rgb(100,100,100);
@@ -30,13 +34,9 @@ table.todoTasks {
   border-radius: 10px;
   width: 100%;
   max-width: 400px;
-  background: #FFF;
   margin: auto; /* Centers */
-
-  /* Gradient for cool people.
   background: rgb(230,230,230);
-  background: linear-gradient(90deg, rgba(200,200,200,1) 0%, rgba(240,240,240,1) 50%, rgba(200,200,200,1) 100%);
-  */
+  background: linear-gradient(90deg, rgba(210,210,210,1) 0%, rgba(240,240,240,1) 50%, rgba(210,210,210,1) 100%);
 }
 
 tr.todoTasks {

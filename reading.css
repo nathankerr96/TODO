@@ -10,3 +10,12 @@ div.main {
   margin: 5%;
   padding: 20px;
 }
+
+div#addBookDiv {
+  /* Start hidden until new book button is pressed */
+  display: none;
+}
+
+h1 {
+  text-align: center;
+}

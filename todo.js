@@ -3,7 +3,7 @@ window.onload = function () {
   if (sessionStorage.getItem('loginName') === null) {
     window.location.replace('login.html');
   }
-  
+
   var createTaskForm = document.getElementById("createTaskForm");
   createTaskForm.onsubmit = addTask;
 };
@@ -69,27 +69,21 @@ function addTaskToTable (val) {
 function addTask () {
   var taskDescriptionInput = document.getElementById("taskDescription");
   var newTask = taskDescriptionInput.value;
-
   var dateTime = new Date().toISOString().slice(0,19).replace('T', ' ');
-
   var loginName = sessionStorage.getItem('loginName');
-
-  var val = {
+  var taskValues = {
     user: loginName,
     insertTime: dateTime,
     task: newTask,
     complete: 0
   };
-  addTaskToTable(val);
-
+  addTaskToTable(taskValues);
+  //send data to server
   var requestUri = 'api/tasks?mode=insert&user=' + loginName + '&insertTime=' +
       dateTime + '&task=' + newTask;
-
   $.get(encodeURI(requestUri));
-
+  //clear input
   taskDescriptionInput.value = "";
-
   taskDescription.focus();
-
   return false;
 }
