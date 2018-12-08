@@ -1,16 +1,26 @@
 <html>
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
   <script src="todo.js"></script>
+  <link href = ./todo.css type = "text/css" rel="stylesheet">
+  <!-- Shared -->
+  <script src="tabs.js"></script>
+  <link href = ./tabs.css type = "text/css" rel="stylesheet">
 </head>
 <body>
+  <!-- Tabs -->
+  <ul class="tabs">
+    <li><a id="todoListLink" href="todo.html">Todo List</a></li>
+    <li><a id="readingSchedule" href="reading.html">Reading Schedule</a></li>
+    <li><button type="button" onClick="logout()">Logout</button></li>
+  </ul>
+
+<div class="main">
   <h1> Get Ready to WORK! </h1>
-  <button type="button" onClick="logout()">Logout</button>
   <p> Here are the things you need to do: </p>
-  <table id="todoTable">
+  <table id="todoTable" class="todoTasks">
     <tr>
-        <td>Task</td> <td>Finish</td>
+        <th colspan="2">Todo List:</th>
     </tr>
   </table>
   <br />
@@ -22,5 +32,6 @@
   <p> Here are the things you have completed today!: </p>
   <table id="completedTable">
   </table>
+</div>
 </body>
 </html>

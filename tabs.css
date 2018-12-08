@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+}
+
+ul.tabs {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+ul.tabs li {
+    font-size: 18px;
+}
+
+ul.tabs a {
+    float: left;
+    width: 150px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    border-radius: 10px 10px 0px 0px;
+    text-decoration: none;
+    color: black;
+}
+
+ul.tabs button {
+    float: right;
+    width: 150px;
+    height: 40px;
+    border: 0;
+    border-radius: 10px 10px 0px 0px;
+}
+
+a#todoListLink {
+  background: #6b7a8f
+}
+
+a#readingSchedule {
+  background: #c38d9e;
+}
+
+/* Remove blue box around button after click */
+button:focus {
+  outline: 0;
+}

@@ -17,7 +17,7 @@ function route(req, res) {
           if (err) {
               res.writeHead(404, {'Content-Type': 'text/html'});
               console.log(filename);
-              return res.end("404 Not Found");
+              return res.end("404 Not Found at all");
           }
 
           res.writeHead(200, {'Content-Type': 'text/html'});

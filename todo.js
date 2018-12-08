@@ -3,7 +3,7 @@ window.onload = function () {
   if (sessionStorage.getItem('loginName') === null) {
     window.location.replace('login.html');
   }
-
+  
   var createTaskForm = document.getElementById("createTaskForm");
   createTaskForm.onsubmit = addTask;
 };
@@ -31,27 +31,31 @@ function finishTask (user, dateTime) {
 }
 
 function addTaskToTable (val) {
-  if (val['complete'] === 0) {
-    var tableName = 'todoTable';
+  var tableName;
+  if (val.complete === 0) {
+    tableName = 'todoTable';
   } else {
-    var tableName = 'completedTable';
+    tableName = 'completedTable';
   }
   var table = document.getElementById(tableName);
 
   var table_row = document.createElement('tr');
+  table_row.className = 'todoTasks';
 
   var table_div1 = document.createElement('td');
-  table_div1.appendChild(document.createTextNode(val['task']));
+  table_div1.className = 'todoTasks taskName';
+  table_div1.appendChild(document.createTextNode(val.task));
   table_row.appendChild(table_div1);
 
-  if (val['complete'] === 0) {
+  if (val.complete === 0) {
     //maybe add a delete button here if complete
     var table_div2 = document.createElement('td');
     var finishButton = document.createElement('button');
+    finishButton.className = "todoTasks completeButton";
     finishButton.onclick = function (){
-      finishTask(sessionStorage.getItem('loginName'), val['insertTime']);
+      finishTask(sessionStorage.getItem('loginName'), val.insertTime);
       this.parentNode.parentNode.remove();
-      val['complete'] = 1;
+      val.complete = 1;
       addTaskToTable(val);
     };
     finishButton.appendChild(document.createTextNode('Finish'));
@@ -88,9 +92,4 @@ function addTask () {
   taskDescription.focus();
 
   return false;
-}
-
-function logout () {
-  sessionStorage.removeItem('loginName');
-  window.location.replace('login.html');
 }
