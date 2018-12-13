@@ -11,11 +11,46 @@ div.main {
   padding: 20px;
 }
 
+ul.currentBooks {
+  list-style-type: none;
+}
+
+ul.currentBooks p {
+  margin: 0;
+  float: left;
+}
+
+li.title {
+  font-size: 32px;
+  margin-bottom: 0;
+}
+
+
+li.pages {
+  float: left;
+  margin: 5px 10px 10px 10px;
+}
+
+li.currentPage {
+  float: left;
+  margin: 5px 10px 10px 10px;
+}
+
+li.dailyGoal {
+  float: left;
+  margin: 5px 10px 10px 10px;
+}
+
+li.pageInput {
+  float: left;
+  margin: 5px 10px 10px 10px;
+}
+
 div#addBookDiv {
   /* Start hidden until new book button is pressed */
   display: none;
 }
 
-h1 {
+h1.header {
   text-align: center;
 }

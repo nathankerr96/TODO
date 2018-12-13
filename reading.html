@@ -1,5 +1,6 @@
 <html>
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="reading.js"></script>
   <link href = ./reading.css type = "text/css" rel="stylesheet">
   <!-- Shared -->
@@ -15,7 +16,7 @@
   </ul>
 
   <div class="main">
-    <h1>This is the reading page!</h1>
+    <h1 class="header">This is the reading page!</h1>
 
     <button onClick="addBook()">Add a new book</button>
     <div id="addBookDiv">
@@ -25,7 +26,29 @@
       <input type="button" value="Add Book" onClick="submitBook(this.form)"></input>
     </div>
 
+    <div id="currentBooksDiv">
+      <ul id="book1" class="currentBooks">
+          <li class="title">Head First Design Patterns</li>
+          <li class="pages">
+            <p>Pages:</p>
+            <p class="value">100</p>
+          </li>
+          <li class="currentPage">
+            <p>Current Page:</p>
+            <p class="value">30</p>
+          </li>
+          <li class="dailyGoal">
+            <p>Daily Goal:</p>
+            <p class="value">10</p>
+          </li>
+          <li class="pageInput">
+            <form>
+              <input class="pagesReadInput" type="number" />
+              <input type="button" value="Add Pages" onClick="addPages(1)" />
+            </form>
+          </li>
+      </ul>
+  </div>
   </div>
 </body>
-
 </html>
