@@ -3,6 +3,7 @@ var url = require('url');
 
 var READING_TABLE_NAME = "reading";
 var TASKS_TABLE_NAME = "tasks";
+var READING_HISTORY_TABLE_NAME = "readingHistory";
 
 
 var pool = mysql.createPool({
@@ -50,6 +51,8 @@ function getQuery(parsedUrl) {
     return getTodoQuery(parsedUrl);
   } else if (database == READING_TABLE_NAME) {
     return getReadingQuery(parsedUrl);
+  } else if (database == READING_HISTORY_TABLE_NAME){
+      return getReadingHistoryQuery(parsedUrl);
   } else {
     console.log("Could not identify table: " + database);
   }
@@ -79,6 +82,23 @@ function getReadingQuery(parsedUrl) {
         break;
     }
     return query;
+}
+
+function getReadingHistoryQuery(parsedUrl) {
+  var searchParams = parsedUrl.query;
+  var mode = searchParams.mode;
+  var user = mysql.escape(searchParams.user);
+
+  switch (mode) {
+    case "select":
+      query = "SELECT * FROM " + READING_TABLE_NAME + " NATURAL JOIN " +
+          READING_HISTORY_TABLE_NAME + " WHERE user=" + user + ";";
+      break;
+    default:
+      console.log("Unrecognized mode: " + mode);
+      break;
+  }
+  return query;
 }
 
 function getTodoQuery(parsedUrl) {

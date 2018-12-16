@@ -11,9 +11,10 @@ CREATE TABLE tasks (
   PRIMARY KEY (user, insertTime)
 );
 
+DROP TABLE IF EXISTS readingHistory;
 DROP TABLE IF EXISTS reading;
 CREATE TABLE reading (
-  id MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  bookId MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user VARCHAR(30) NOT NULL,
   insertTime DATETIME NOT NULL,
   title TEXT,
@@ -28,7 +29,7 @@ CREATE TABLE readingHistory (
   pagesRead INT,
   bookId MEDIUMINT,
   CONSTRAINT `fk_book_id`
-    FOREIGN KEY (bookId) REFERENCES reading (id)
+    FOREIGN KEY (bookId) REFERENCES reading (bookId)
     ON DELETE CASCADE
     ON UPDATE RESTRICT
 );

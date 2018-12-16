@@ -1,8 +1,8 @@
-const http = require('http');
-const url = require('url');
-const fs = require('fs');
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
 
-const db = require('./db_access.js')
+var db = require('./db_access.js');
 
 
 function route(req, res) {
