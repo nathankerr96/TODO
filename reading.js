@@ -3,9 +3,28 @@ window.onload = function () {
   if (sessionStorage.getItem('loginName') === null) {
     window.location.replace('login.html');
   }
+
+  addTitleCardClickListener(1);
 };
 
 $(document).ready(populate);
+
+//Take in the id of the book and add the onclick listner to the title title card
+//that expands the expandedCard div with the same id
+function addTitleCardClickListener(idNum) {
+    var titleCard = document.getElementById("titleCard" + idNum);
+    titleCard.addEventListener("click", function() {
+      var readingHistoryDiv = document.getElementById("expandedCard" + idNum);
+      if (readingHistoryDiv.style.display == "block") {
+          readingHistoryDiv.style.display = "none";
+          titleCard.style.borderRadius = "20px";
+      } else {
+          readingHistoryDiv.style.display = "block";
+          titleCard.style.borderRadius = "20px 20px 0px 0px";
+      }
+    }
+  );
+}
 
 function populate() {
   update_list();

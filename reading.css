@@ -1,49 +1,8 @@
 body {
   background: #c38d9e;
-}
-
-div.main {
-  background: #41b3a3;
-
-  height: 100%;
-  border-radius: 30px;
-  margin: 5%;
-  padding: 20px;
-}
-
-ul.currentBooks {
-  list-style-type: none;
-}
-
-ul.currentBooks p {
-  margin: 0;
-  float: left;
-}
-
-li.title {
-  font-size: 32px;
-  margin-bottom: 0;
-}
-
-
-li.pages {
-  float: left;
-  margin: 5px 10px 10px 10px;
-}
-
-li.currentPage {
-  float: left;
-  margin: 5px 10px 10px 10px;
-}
-
-li.dailyGoal {
-  float: left;
-  margin: 5px 10px 10px 10px;
-}
-
-li.pageInput {
-  float: left;
-  margin: 5px 10px 10px 10px;
+  min-width: 500px;
+  width: auto !important;
+  width: 500px;
 }
 
 div#addBookDiv {
@@ -52,5 +11,112 @@ div#addBookDiv {
 }
 
 h1.header {
+  text-align: center;
+}
+
+div.main {
+  /*background: #41b3a3;*/
+  background: #DDD;
+
+  height: 100%;
+  border-radius: 30px;
+  margin: 5%;
+  padding: 20px;
+}
+
+div.titleCard {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  display: inline-block;
+  background-color: #BBB;
+  margin-bottom: 0px;
+  border-radius: 20px;
+}
+
+div.titleCard:hover {
+  background-color: #999;
+}
+
+ul.titleCardList {
+  width: 100%;
+  margin: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  list-style-type: none;
+}
+
+ul.titleCardList li {
+  margin-right: 5%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+li.titleCardTitle {
+  font-size: 32px;
+  width: 45%;
+}
+
+li.titleCardPercent {
+  width: 10%;
+}
+
+li.titleCardPagesLeft {
+  width: 15%;
+}
+
+li.expandButton {
+  font-size: 32px;
+  width: 5%;
+  font-weight: bold;
+}
+
+div.expandedCard {
+  background-color: #CCC;
+  padding-top: 10px;
+  display: none;
+  border-radius: 0 0 20px 20px;
+}
+
+ul.readingHistory {
+  margin: 0;
+  list-style-type: none;
+  padding: 0;
+}
+
+li.day {
+  margin-bottom: 10px;
+}
+
+ul.dayDetails {
+  display: inline-flex;
+  width: 100%;
+  margin: 0;
+  list-style-type: none;
+}
+
+ul.dayDetails li {
+  width: 25%
+}
+
+form.addPagesForm {
+  display: inline-flex;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  justify-content: center;
+}
+
+form.addPagesForm label {
+  margin-right: 15px;
+}
+
+input.addPagesInput {
+  width: 70px;
+  margin-right: 15px;
+  border-radius: 10px;
+  padding-left: 10px;
   text-align: center;
 }

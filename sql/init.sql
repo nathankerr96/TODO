@@ -13,11 +13,22 @@ CREATE TABLE tasks (
 
 DROP TABLE IF EXISTS reading;
 CREATE TABLE reading (
+  id MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user VARCHAR(30) NOT NULL,
   insertTime DATETIME NOT NULL,
   title TEXT,
   pages INT,
   daily_goal INT,
-  current_page INT,
-  PRIMARY KEY (user, insertTime)
+  current_page INT
+);
+
+DROP TABLE IF EXISTS readingHistory;
+CREATE TABLE readingHistory (
+  day DATETIME,
+  pagesRead INT,
+  bookId MEDIUMINT,
+  CONSTRAINT `fk_book_id`
+    FOREIGN KEY (bookId) REFERENCES reading (id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT
 );
