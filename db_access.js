@@ -92,7 +92,8 @@ function getReadingHistoryQuery(parsedUrl) {
   switch (mode) {
     case "select":
       query = "SELECT * FROM " + READING_TABLE_NAME + " NATURAL JOIN " +
-          READING_HISTORY_TABLE_NAME + " WHERE user=" + user + ";";
+          READING_HISTORY_TABLE_NAME + " WHERE user=" + user +
+          " ORDER BY day;";
       break;
     default:
       console.log("Unrecognized mode: " + mode);

@@ -25,7 +25,7 @@ CREATE TABLE reading (
 
 DROP TABLE IF EXISTS readingHistory;
 CREATE TABLE readingHistory (
-  day DATETIME,
+  day DATE,
   pagesRead INT,
   bookId MEDIUMINT,
   CONSTRAINT `fk_book_id`

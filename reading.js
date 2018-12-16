@@ -42,17 +42,35 @@ function addPages(id) {
 function update_list() {
   var loginName = sessionStorage.getItem('loginName');
   var url = 'api/reading?mode=select&user=' + loginName;
+  //Map from bookId Map of
+  var books = {};
   $.getJSON(url, function(data){
     $.each( data, function( key, val ) {
+      var bookId = val.bookId;
+      books[bookId] = {};
+      books[bookId].insertTime = Date(val.insertTime);
+      books[bookId].bookId = bookId;
+      books[bookId].pages = val.pages;
+      books[bookId].dailyGoal = val.daily_goal;
+      books[bookId].currentPage = val.currentPage;
+      books[bookId].history = [];
       addBookTitleCard(val);
     });
-  });
-  url = 'api/readingHistory?mode=select&user='+loginName;
-  $.getJSON(url, function(data) {
-    $.each(data, function(key, val) {
-      addHistoryToList(val);
+    //needs to happen synchronously so put it in callback
+    url = 'api/readingHistory?mode=select&user='+loginName;
+    $.getJSON(url, function(data) {
+      $.each(data, function(key, val) {
+        var bookId = val.bookId;
+        books[bookId].history.push(val);
+      });
+
+      for (var bookId in books) {
+        if (books[bookId].history.length > 0) {
+            addHistoryToList(books[bookId]);
+        }
+      }
+      });
     });
-  });
 }
 
 function createExpandedCard(id) {
@@ -90,10 +108,21 @@ function createExpandedCard(id) {
 }
 
 //TODO: Only retrive needed values from table
-function addHistoryToList(val) {
-    var id = val.bookId;
-    var day = val.day;
-    var pagesRead = val.pagesRead;
+function addHistoryToList(bookInfo) {
+  var bookId = bookInfo.bookId;
+  var currentPage = bookInfo.currentPage;
+  var insertTime = Date(bookInfo.insertTime);
+  var pages = bookInfo.pages;
+  var dailyGoal = bookInfo.dailyGoal;
+
+  var readingHistoryList = document.getElementById("readingHistory"+bookId);
+  var history = bookInfo.history;
+  var arrayLength = history.length;
+  var overallPagesRead = 0;
+  var daysElapsed = 1;
+  for (var i=0; i<arrayLength; i++) {
+    var day = new Date(history[i].day);
+    var pagesRead = history[i].pagesRead;
 
 
     var dayHistory = document.createElement("li");
@@ -103,7 +132,9 @@ function addHistoryToList(val) {
     dayDetailsList.className = "dayDetails";
 
     var dateListItem = document.createElement("li");
-    dateListItem.appendChild(document.createTextNode(day));
+    var dateText = day.toLocaleDateString();
+    //TODO: Probably strugges on time zone
+    dateListItem.appendChild(document.createTextNode(dateText));
     dayDetailsList.appendChild(dateListItem);
 
     var pagesReadListItem = document.createElement("li");
@@ -111,21 +142,34 @@ function addHistoryToList(val) {
     dayDetailsList.appendChild(pagesReadListItem);
 
     var dailyGoalListItem = document.createElement("li");
-    //TODO: need daily goal
-    var dailyGoalText = "Daily Goal: +10";
+    var overUnderDaily = pagesRead - dailyGoal;
+    var dailyGoalText = "Error";
+    if (overUnderDaily < 0) {
+      dailyGoalText = Math.abs(overUnderDaily) + " Under Daily Goal";
+    } else {
+      dailyGoalText = overUnderDaily + " Over Daily Goal";
+    }
     dailyGoalListItem.appendChild(document.createTextNode(dailyGoalText));
     dayDetailsList.appendChild(dailyGoalListItem);
 
     var overallGoalListItem = document.createElement("li");
     //TODO: need overall goal
-    var overallGoalText = "Overall: -10";
+    var overallGoalPages = daysElapsed * dailyGoal;
+    overallPagesRead += pagesRead;
+    var overUnderOverall = overallPagesRead - overallGoalPages;
+    var overallGoalText = "Error";
+    if (overUnderOverall < 0) {
+      overallGoalText = overUnderOverall + " Behind Schedule";
+    } else {
+      overallGoalText = overUnderOverall + " Ahead of Schedule";
+    }
     overallGoalListItem.appendChild(document.createTextNode(overallGoalText));
     dayDetailsList.appendChild(overallGoalListItem);
 
     dayHistory.appendChild(dayDetailsList);
 
-    readingHistoryList = document.getElementById("readingHistory" + id);
-    readingHistoryList.appendChild(dayHistory);
+    readingHistoryList.insertBefore(dayHistory, readingHistoryList.childNodes[0]);
+  }
 }
 
 function addBookTitleCard(val) {
