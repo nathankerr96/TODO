@@ -28,6 +28,7 @@ CREATE TABLE readingHistory (
   day DATE,
   pagesRead INT,
   bookId MEDIUMINT,
+  PRIMARY KEY (day, bookId),
   CONSTRAINT `fk_book_id`
     FOREIGN KEY (bookId) REFERENCES reading (bookId)
     ON DELETE CASCADE

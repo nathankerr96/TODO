@@ -95,6 +95,14 @@ function getReadingHistoryQuery(parsedUrl) {
           READING_HISTORY_TABLE_NAME + " WHERE user=" + user +
           " ORDER BY day;";
       break;
+    case "addPages":
+      var pagesRead = searchParams.pages;
+      var bookId = searchParams.id;
+      query = "INSERT INTO " + READING_HISTORY_TABLE_NAME +
+      " VALUES (CONVERT_TZ(NOW(), @@session.time_zone, '+00:00')," +
+        pagesRead + "," + bookId + ") ON DUPLICATE KEY UPDATE " +
+        "`pagesRead`=`pagesRead`+" + pagesRead + ";";
+        break;
     default:
       console.log("Unrecognized mode: " + mode);
       break;

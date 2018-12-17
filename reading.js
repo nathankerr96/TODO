@@ -89,12 +89,16 @@ function createExpandedCard(id) {
     addPagesInput.type = "number";
     addPagesInput.min = "0";
     addPagesInput.className = "addPagesInput";
+    addPagesInput.id = "addPagesInput"+id;
     addPagesForm.appendChild(addPagesInput);
 
     var addPagesButton = document.createElement("input");
     addPagesButton.type = "button";
     addPagesButton.value = "Add Pages";
     addPagesButton.className = "addPagesButton";
+    addPagesButton.onclick = function() {
+      addPages(id);
+    };
     addPagesForm.appendChild(addPagesButton);
 
     expandedCardDiv.appendChild(addPagesForm);
@@ -138,7 +142,7 @@ function addHistoryToList(bookInfo) {
     dayDetailsList.appendChild(dateListItem);
 
     var pagesReadListItem = document.createElement("li");
-    pagesReadListItem.appendChild(document.createTextNode(pagesRead + " Pages Read"));
+    pagesReadListItem.appendChild(document.createTextNode(pagesRead));
     dayDetailsList.appendChild(pagesReadListItem);
 
     var dailyGoalListItem = document.createElement("li");
@@ -159,7 +163,7 @@ function addHistoryToList(bookInfo) {
     var overUnderOverall = overallPagesRead - overallGoalPages;
     var overallGoalText = "Error";
     if (overUnderOverall < 0) {
-      overallGoalText = overUnderOverall + " Behind Schedule";
+      overallGoalText = Math.abs(overUnderOverall) + " Behind Schedule";
     } else {
       overallGoalText = overUnderOverall + " Ahead of Schedule";
     }
@@ -169,6 +173,7 @@ function addHistoryToList(bookInfo) {
     dayHistory.appendChild(dayDetailsList);
 
     readingHistoryList.insertBefore(dayHistory, readingHistoryList.childNodes[0]);
+    daysElapsed += 1;
   }
 }
 
@@ -217,6 +222,53 @@ function addBookTitleCard(val) {
   currentBooksDiv.appendChild(expandedCardDiv);
 
   addTitleCardClickListener(titleCardDiv, expandedCardDiv);
+}
+
+function addPages(id) {
+  var addPagesInput = document.getElementById("addPagesInput"+id);
+  addPagesValue = parseInt(addPagesInput.value);
+  if (isNaN(addPagesValue)) {
+    return;
+  }
+
+  var topHistory = document.getElementById("readingHistory"+id).childNodes[0].childNodes[0];
+  var date = topHistory.childNodes[0].textContent;
+  var pages = parseInt(topHistory.childNodes[1].textContent);
+  var newPages = pages + addPagesValue;
+  topHistory.childNodes[1].textContent = newPages.toString();
+
+  var overUnderDailyGoal = topHistory.childNodes[2];
+  var overUnderDailyGoalValue = parseInt(overUnderDailyGoal.textContent.split(" ")[0]);
+  var newOverUnderDailyGoalValue = overUnderDailyGoalValue + addPagesValue;
+  var dailyGoalText = "Error2";
+  if (newOverUnderDailyGoalValue < 0) {
+    dailyGoalText = Math.abs(newOverUnderDailyGoalValue) + " Under Daily Goal";
+  } else {
+    dailyGoalText = newOverUnderDailyGoalValue + " Over Daily Goal";
+  }
+  overUnderDailyGoal.textContent = dailyGoalText;
+
+  var overUnderOverall = topHistory.childNodes[3];
+  var overUnderOverallValue = parseInt(overUnderOverall.textContent.split(" ")[0]);
+  var newOverUnderOverallValue = overUnderOverallValue + addPagesValue;
+  var overallGoalText = "Error2";
+  //TODO: This won't work because behind is still a positive number
+  if (newOverUnderOverallValue < 0) {
+    overallGoalText = Math.abs(newOverUnderOverallValue) + " Behind Schedule";
+  } else {
+    overallGoalText = newOverUnderOverallValue + " Ahead of Schedule";
+  }
+  overUnderOverall.textContent = overallGoalText;
+  addPagesInput.value = null;
+
+  updateCurrentDay(addPagesValue, id);
+}
+
+function updateCurrentDay(pagesToAdd, id) {
+  var loginName = sessionStorage.getItem('loginName');
+  var requestUri = 'api/readingHistory?mode=addPages&user=' + loginName +
+    '&pages=' + pagesToAdd + "&id=" + id;
+  $.get(encodeURI(requestUri));
 }
 
 function addBook() {
